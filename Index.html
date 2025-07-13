@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdus Salam | Strategic Product Consultant</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- GSAP (Animation) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    
+    <!-- Chart.js (Data Visualization) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide-react@0.292.0/dist/lucide-react.js"></script>
+    <script src="https://unpkg.com/lucide-icons@0.292.0/dist/lucide.min.js"></script>
+
+    <!-- Three.js (3D Background) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+            color: #e2e8f0; /* slate-200 */
+        }
+        .hero-canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        .client-marquee-inner {
+            display: flex;
+            animation: marquee 60s linear infinite;
+        }
+        .client-marquee:hover .client-marquee-inner {
+            animation-play-state: paused;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .glassmorphism {
+            background: rgba(17, 24, 39, 0.6); /* bg-gray-900 with opacity */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(55, 65, 81, 0.3); /* border-gray-700 with opacity */
+        }
+        .section-glow {
+            position: absolute;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.15;
+            filter: blur(100px);
+        }
+        .tab-active {
+            background-color: #3b82f6; /* bg-blue-600 */
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header id="header" class="fixed top-0 left-0 w-full z-50 transition-all duration-300 glassmorphism">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-white tracking-wider">Abdus Salam</a>
+            <nav class="hidden md:flex items-center space-x-8">
+                <a href="#clients" class="text-slate-300 hover:text-blue-400 transition-colors">Clients</a>
+                <a href="#missions" class="text-slate-300 hover:text-blue-400 transition-colors">Case Studies</a>
+                <a href="#blueprint" class="text-slate-300 hover:text-blue-400 transition-colors">Process</a>
+                <a href="#about" class="text-slate-300 hover:text-blue-400 transition-colors">About</a>
+                <a href="#ai-lab" class="text-slate-300 hover:text-blue-400 transition-colors">AI Lab</a>
+            </nav>
+            <a href="#contact" class="hidden md:inline-block bg-blue-600 text-white px-5 py-2 rounded-lg font-semibold hover:bg-blue-700 transition-transform hover:scale-105">Engage</a>
+            <button id="mobile-menu-btn" class="md:hidden text-white">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900/80 backdrop-blur-sm">
+            <nav class="flex flex-col items-center space-y-4 py-6">
+                <a href="#clients" class="text-slate-300 hover:text-blue-400 transition-colors">Clients</a>
+                <a href="#missions" class="text-slate-300 hover:text-blue-400 transition-colors">Case Studies</a>
+                <a href="#blueprint" class="text-slate-300 hover:text-blue-400 transition-colors">Process</a>
+                <a href="#about" class="text-slate-300 hover:text-blue-400 transition-colors">About</a>
+                <a href="#ai-lab" class="text-slate-300 hover:text-blue-400 transition-colors">AI Lab</a>
+                <a href="#contact" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-transform hover:scale-105 mt-4">Engage</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="relative min-h-screen flex items-center justify-center text-center overflow-hidden">
+            <div class="hero-canvas-container" id="hero-canvas-container"></div>
+            <div class="relative z-10 p-6 max-w-4xl mx-auto">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-4 animate-fade-in-down">
+                    Architect of <span class="text-blue-400">Strategic Improvement</span> & AI-Driven Transformation.
+                </h1>
+                <p class="text-lg md:text-xl text-slate-300 max-w-3xl mx-auto mb-8 animate-fade-in-up">
+                    I partner with executive teams to move beyond incremental change. By embedding a rigorous framework for critique and execution, we deconstruct complexity, design resilient strategies, and deliver measurable, AI-powered improvements to your core products and processes.
+                </p>
+                <a href="#missions" class="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-bold hover:bg-blue-700 transition-all duration-300 transform hover:scale-110 inline-block animate-fade-in">
+                    View Executed Missions
+                </a>
+            </div>
+        </section>
+
+        <!-- Client Matrix Section -->
+        <section id="clients" class="py-20 sm:py-28 bg-gray-900/50 relative overflow-hidden">
+             <div class="section-glow top-0 left-1/2 -translate-x-1/2 w-full h-1/2 bg-blue-500"></div>
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Client Portfolio</h2>
+                <p class="text-lg text-slate-400 mb-12 max-w-2xl mx-auto">A history of delivering transformative value for industry leaders and innovators.</p>
+                
+                <div class="client-marquee w-full inline-block whitespace-nowrap overflow-hidden">
+                    <div class="client-marquee-inner">
+                        <!-- Client logos will be duplicated by JS for seamless scroll -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Missions Section (Case Studies) -->
+        <section id="missions" class="py-20 sm:py-28 relative">
+            <div class="section-glow bottom-0 right-0 w-1/2 h-1/2 bg-indigo-500"></div>
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4 uppercase tracking-widest">Executed Missions</h2>
+                    <p class="text-lg text-slate-400 max-w-2xl mx-auto">A portfolio of strategic interventions and their material impact.</p>
+                </div>
+
+                <div class="max-w-6xl mx-auto">
+                    <!-- Tab Headers -->
+                    <div id="case-study-tabs" class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+                        <!-- Tabs will be generated by JS -->
+                    </div>
+
+                    <!-- Tab Content -->
+                    <div id="case-study-content" class="relative">
+                        <!-- Content will be injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The Blueprint Section (Process) -->
+        <section id="blueprint" class="py-20 sm:py-28 bg-gray-900/50 relative">
+            <div class="section-glow top-0 left-0 w-1/2 h-1/2 bg-purple-500"></div>
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">The Improvement Architecture</h2>
+                    <p class="text-lg text-slate-400 max-w-2xl mx-auto">My battle-tested framework for turning strategic ambiguity into executable clarity.</p>
+                </div>
+
+                <div class="relative max-w-5xl mx-auto">
+                    <!-- The connecting line -->
+                    <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-700 -translate-y-1/2"></div>
+                    
+                    <div class="grid md:grid-cols-4 gap-12 md:gap-8">
+                        <!-- Step 1: Discover -->
+                        <div class="process-step text-center md:text-left relative">
+                            <div class="flex justify-center md:justify-start items-center mb-4">
+                                <div class="bg-gray-800 border-2 border-blue-500 rounded-full w-16 h-16 flex items-center justify-center text-blue-400 font-bold text-2xl z-10">01</div>
+                                <h3 class="text-2xl font-semibold text-white ml-4">Discover</h3>
+                            </div>
+                            <p class="text-slate-400">Deconstruct the problem space through quantitative analysis and qualitative intelligence gathering to expose foundational assumptions.</p>
+                        </div>
+                        <!-- Step 2: Define -->
+                        <div class="process-step text-center md:text-left relative">
+                            <div class="flex justify-center md:justify-start items-center mb-4">
+                                <div class="bg-gray-800 border-2 border-blue-500 rounded-full w-16 h-16 flex items-center justify-center text-blue-400 font-bold text-2xl z-10">02</div>
+                                <h3 class="text-2xl font-semibold text-white ml-4">Define</h3>
+                            </div>
+                            <p class="text-slate-400">Architect a high-leverage strategy with clear objectives (OKRs), testable hypotheses, and defined success metrics from day one.</p>
+                        </div>
+                        <!-- Step 3: Design -->
+                        <div class="process-step text-center md:text-left relative">
+                            <div class="flex justify-center md:justify-start items-center mb-4">
+                                <div class="bg-gray-800 border-2 border-blue-500 rounded-full w-16 h-16 flex items-center justify-center text-blue-400 font-bold text-2xl z-10">03</div>
+                                <h3 class="text-2xl font-semibold text-white ml-4">Design</h3>
+                            </div>
+                            <p class="text-slate-400">Co-create and validate solutions through rapid prototyping and continuous, actionable feedback loops in a psychologically safe environment.</p>
+                        </div>
+                        <!-- Step 4: Deliver -->
+                        <div class="process-step text-center md:text-left relative">
+                            <div class="flex justify-center md:justify-start items-center mb-4">
+                                <div class="bg-gray-800 border-2 border-blue-500 rounded-full w-16 h-16 flex items-center justify-center text-blue-400 font-bold text-2xl z-10">04</div>
+                                <h3 class="text-2xl font-semibold text-white ml-4">Deliver</h3>
+                            </div>
+                            <p class="text-slate-400">Embed with teams to drive execution with precision and agility, anchoring new capabilities into the organizational culture.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section id="about" class="py-20 sm:py-28 relative">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-5 gap-12 items-center">
+                    <div class="md:col-span-2">
+                        <img src="https://placehold.co/500x500/1e293b/475569?text=Abdus+Salam" alt="Abdus Salam Headshot" class="rounded-lg shadow-2xl w-full h-auto object-cover">
+                    </div>
+                    <div class="md:col-span-3">
+                        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">"Strategy without execution is hallucination."</h2>
+                        <div class="space-y-4 text-slate-300 text-lg">
+                            <p>I operate at the nexus of strategy, technology, and execution. For over a decade, I've partnered with C-level leaders to transform ambitious vision into tangible enterprise value. My professional philosophy is rooted in the belief that sustainable growth is not born from isolated projects, but from building a systemic capability for continuous improvement. I don't just solve problems; I architect the engine for solving them, embedding a culture of critical inquiry and data-driven decision-making deep within an organization.</p>
+                            <p>My approach is both analytical and deeply human. I leverage frameworks from Kaizen to Disruptive Innovation, but I know that these tools are inert without a foundation of psychological safety and a collective growth mindset. By embedding with your teams, I work to de-risk transformation, foster a culture of shared ownership, and build the resilient, agile processes required to win in today's market. Success, for me, is not a launch date—it's the demonstrable, lasting impact on your bottom line and your organization's capacity to adapt and thrive.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Strategy Lab Section -->
+        <section id="ai-lab" class="py-20 sm:py-28 bg-gray-900/50 relative">
+            <div class="section-glow bottom-0 -left-1/4 w-1/2 h-1/2 bg-teal-500"></div>
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">AI Strategy Lab</h2>
+                <p class="text-lg text-slate-400 mb-12 max-w-2xl mx-auto">Receive an instant, AI-powered strategic analysis of your business challenge.</p>
+                
+                <div class="max-w-3xl mx-auto glassmorphism rounded-lg p-8">
+                    <div class="w-full">
+                        <label for="business-challenge" class="block text-left text-slate-300 font-semibold mb-2">Describe your business challenge or objective:</label>
+                        <textarea id="business-challenge" rows="4" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-3 text-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="e.g., 'Reduce customer churn by 15% in the next quarter' or 'Improve our new user onboarding flow to increase activation rates.'"></textarea>
+                        <button id="generate-blueprint-btn" class="mt-6 w-full bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-bold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 flex items-center justify-center">
+                            <span id="btn-text">Generate Strategic Blueprint</span>
+                            <svg id="btn-loader" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div id="ai-output-container" class="mt-8 text-left hidden">
+                        <h3 class="text-2xl font-bold text-white mb-4">Your Generated Strategic Blueprint:</h3>
+                        <div id="ai-output" class="space-y-6 bg-gray-900 p-6 rounded-lg border border-gray-700">
+                           <!-- AI generated content will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 sm:py-28 relative">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Engage</h2>
+                    <p class="text-lg text-slate-400 max-w-2xl mx-auto">Ready to architect your next strategic advantage? Let's connect.</p>
+                </div>
+                <form class="max-w-xl mx-auto">
+                    <div class="mb-4">
+                        <label for="name" class="block text-slate-300 mb-2">Name</label>
+                        <input type="text" id="name" name="name" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-3 text-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-slate-300 mb-2">Email</label>
+                        <input type="email" id="email" name="email" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-3 text-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    </div>
+                    <div class="mb-6">
+                        <label for="message" class="block text-slate-300 mb-2">Message</label>
+                        <textarea id="message" name="message" rows="5" class="w-full bg-gray-800 border border-gray-600 rounded-lg p-3 text-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-bold hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">Send Message</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900/50 border-t border-gray-800 py-12">
+        <div class="container mx-auto px-6 text-center text-slate-400">
+            <div class="flex justify-center space-x-6 mb-6">
+                <a href="#clients" class="hover:text-blue-400 transition-colors">Clients</a>
+                <a href="#missions" class="hover:text-blue-400 transition-colors">Case Studies</a>
+                <a href="#blueprint" class="hover:text-blue-400 transition-colors">Process</a>
+                <a href="#about" class="hover:text-blue-400 transition-colors">About</a>
+                <a href="#ai-lab" class="hover:text-blue-400 transition-colors">AI Lab</a>
+            </div>
+            <div class="flex justify-center mb-6">
+                <a href="https://www.linkedin.com/" target="_blank
